@@ -1,0 +1,55 @@
+﻿
+
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    
+
+</head>
+
+<form id="idForm">
+    <input type="date" id="startDate" />
+    <input type="date" id="endDate" />
+    <input type="submit" id="submit" />
+</form>
+<script type="text/javascript">
+    $(function () {
+
+
+        $("#idForm").submit(function (e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+            if ($("#startDate").val() === '' || $("#endDate").val() === '') {
+                alert("請選擇日期")
+            } else {
+                var testurl = "/Reservation/ExportExcel"
+                var iis ="/ExportExcel"
+                var iisurl = iis + testurl;
+
+                let x = {
+                    "parameter": {
+                        "startdate": $("#startDate").val(),
+                        "enddate": $("#endDate").val(),
+                    }
+                }
+                $.ajax({
+                    type: "POST",
+                    url: iisurl,
+                    data: x, // serializes the form's elements.
+                    success: function (tempfileName) {
+
+                        if (tempfileName != null) {
+                            window.location = iis+"/Reservation/download?tempfileName=" + tempfileName;
+                        }
+
+
+                    }
+                });
+
+            }
+
+
+
+        });
+    });
+</script>
+
